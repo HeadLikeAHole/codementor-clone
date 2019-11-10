@@ -14,3 +14,6 @@ export const truncateWords = (text, wordsNumber) => {
     return wordArray.slice(0, wordsNumber).join(' ') + '...';
   }
 };
+
+
+export const convertToOptions = arr => arr.map(el => ({ value: el[0], label: el[1] }));

@@ -29,9 +29,8 @@ export default function (state = initialState, action) {
       return { ...state, isLoading: false, user: action.payload };
     case AUTH_FAIL:
     case USER_ERROR:
-      return { ...state, isLoading: false, isAuthenticated: false };
     case AUTH_LOGOUT:
-      return initialState;
+      return { ...state, token: null, isLoading: false, isAuthenticated: false };
     default:
       return state
   }

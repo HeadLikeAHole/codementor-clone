@@ -2,9 +2,10 @@ import React, { useReducer, useEffect } from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBIcon, MDBInput, MDBBtn, MDBCard, MDBCardBody } from 'mdbreact';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Redirect, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { addJob, editJob } from '../../actions/jobs';
+import { displayMessage } from '../../actions/messages';
 
 
 const JobForm = props => {
@@ -39,11 +40,16 @@ const JobForm = props => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (job) {
-      props.editJob(job.id, state, props.history);
+    if (state.deadline && new Date(state.deadline) < new Date()) {
+      props.displayMessage('danger', 'Deadline should be set in the future')
     } else {
-      props.addJob(state, props.history);
+      if (job) {
+        props.editJob(job.id, state, props.history);
+      } else {
+        props.addJob(state, props.history);
+      }
     }
+
     setState(initialState);
   };
 
@@ -127,4 +133,4 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps, { addJob, editJob })(JobForm);
+export default connect(mapStateToProps, { addJob, editJob, displayMessage })(JobForm);

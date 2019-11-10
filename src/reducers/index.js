@@ -5,6 +5,7 @@ import jobList from './jobList';
 import jobDetail from './jobDetail';
 import profile from './profile';
 import freelancerList from './freelancerList';
+import messages from './messages';
 
 
 export default combineReducers({
@@ -12,5 +13,6 @@ export default combineReducers({
   jobList,
   jobDetail,
   profile,
-  freelancerList
+  freelancerList,
+  messages
 })

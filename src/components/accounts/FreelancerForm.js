@@ -12,8 +12,8 @@ const FreelancerForm = props => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const { becomeFreelancer, setFormIsVisible, setAlertIsVisible } = props;
-    becomeFreelancer({ bio, technologies }, setFormIsVisible, setAlertIsVisible);
+    const { becomeFreelancer, setFormIsVisible } = props;
+    becomeFreelancer({ bio, technologies }, setFormIsVisible);
   };
 
   return (
@@ -58,8 +58,7 @@ const FreelancerForm = props => {
 
 FreelancerForm.propTypes = {
   becomeFreelancer: PropTypes.func.isRequired,
-  setFormIsVisible: PropTypes.func.isRequired,
-  setAlertIsVisible: PropTypes.func.isRequired
+  setFormIsVisible: PropTypes.func.isRequired
 };
 
 

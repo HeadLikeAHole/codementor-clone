@@ -1,10 +1,11 @@
-import React, { useReducer, useEffect } from 'react';
-import {  MDBRow, MDBCol, MDBInput, MDBBtn, MDBCard, MDBCardBody } from 'mdbreact';
+import React, { useReducer, useState, useEffect } from 'react';
+import { MDBRow, MDBCol, MDBInput, MDBBtn, MDBCard, MDBCardBody } from 'mdbreact';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link, useHistory } from 'react-router-dom';
 
 import { loadProfile, editProfile } from '../../actions/profiles';
+import LanguagesSelectField from './LanguagesSelectField';
 
 
 const ProfileEdit = props => {
@@ -19,9 +20,9 @@ const ProfileEdit = props => {
     photoUrl: '',
     social_accounts: '',
     timezone: '',
-    languages: '',
+    languages: [],
     bio: '',
-    technologies: ''
+    technologies: []
   };
 
   const [state, setState] = useReducer((state, updatedState) => ({...state, ...updatedState}), initialState);
@@ -37,7 +38,6 @@ const ProfileEdit = props => {
     } else {
       setState({ [name]: value });
     }
-
   };
 
   const handleSubmit = e => {
@@ -67,8 +67,8 @@ const ProfileEdit = props => {
           social_accounts: profile.social_accounts,
           timezone: profile.timezone,
           languages: profile.languages,
-          bio: profile.freelancer.bio,
-          technologies: profile.freelancer.technologies
+          bio: profile.freelancer ? profile.freelancer.bio : '',
+          technologies: profile.freelancer ? profile.freelancer.technologies : ''
         })
       });
   };
@@ -80,7 +80,7 @@ const ProfileEdit = props => {
   }, [props.auth.user]);
 
   const { id, username, email, first_name, last_name, photoUrl, social_accounts, timezone, languages, bio, technologies } = state;
-
+  console.log(state);
   return (
     <MDBRow>
       <MDBCol md="6" className="offset-md-3">
@@ -173,17 +173,15 @@ const ProfileEdit = props => {
                   value={timezone}
                   onChange={handleChange}
                 />
-                <MDBInput
-                  label="Languages you speak"
-                  group
-                  type="text"
-                  validate
-                  error="wrong"
-                  success="right"
-                  name="languages"
-                  value={languages}
-                  onChange={handleChange}
-                />
+
+                {
+                  state.id &&
+                    <LanguagesSelectField
+                      initialValues={languages}
+                      setState={setState}
+                    />
+                }
+
                 <MDBInput
                   label="Your experience"
                   group

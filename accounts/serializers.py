@@ -10,6 +10,10 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'email', 'first_name', 'last_name')
 
 
+# since JobSerializer uses UserSerializer then JobSerializer import should be declared after UserSerializer definition
+from jobs.serializers import JobSerializer
+
+
 class FreelancerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Freelancer
@@ -34,10 +38,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         return None
 
     def get_taken_jobs(self, obj):
-        job_ids = []
-        for job in obj.user.jobs.all():
-            job_ids.append(job.id)
-        return job_ids
+        return JobSerializer(obj.user.jobs.all(), many=True).data
 
     def update(self, instance, validated_data):
         print(validated_data)

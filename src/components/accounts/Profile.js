@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { MDBAlert, MDBBtn, MDBCard, MDBCardBody, MDBCardTitle, MDBCol, MDBRow } from 'mdbreact';
+import { MDBBtn, MDBCard, MDBCardBody, MDBCardTitle, MDBCol, MDBRow } from 'mdbreact';
 import { useParams, useLocation, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -17,12 +17,11 @@ const Profile = props => {
     localStorage.setItem('location_job_id', location_job_id)
   }
 
-  const job_id = localStorage.getItem('location_job_id');
+  const job_id = parseInt(localStorage.getItem('location_job_id'), 10);
 
   useEffect(() => props.loadProfile(id), [id]);
 
   const [formIsVisible, setFormIsVisible] = useState(false);
-  const [alertIsVisible, setAlertIsVisible] = useState(false);
 
   const { auth } = props;
   const { user, freelancer, taken_jobs, photo, social_accounts, timezone, languages } = props.profile.profile;
@@ -43,7 +42,7 @@ const Profile = props => {
   }
 
   // check if used has been hired
-  const isHired = taken_jobs && !!taken_jobs.includes(parseInt(job_id, 10));
+  const isHired = taken_jobs && !!taken_jobs.filter(job => job.id === job_id).length;
   const hireButton = (
       <MDBBtn color={isHired ? 'deep-orange' : 'primary'} className="mt-2 btn-block" onClick={() => props.hireFreelancer(id, job_id)}>
         {isHired ? 'Hired' : 'Hire Now'}
@@ -96,24 +95,12 @@ const Profile = props => {
                     <br />
                   </>
               }
-
+              <br />
             </MDBCol>
           </MDBRow>
         </MDBCardBody>
       </MDBCard>
-      {
-        formIsVisible &&
-          <FreelancerForm
-            setFormIsVisible={setFormIsVisible}
-            setAlertIsVisible={setAlertIsVisible}
-          />
-      }
-      {
-        alertIsVisible &&
-          <MDBAlert color="success" dismiss>
-            <strong>Success!</strong> You've become a freelancer.
-          </MDBAlert>
-      }
+      {formIsVisible && <FreelancerForm setFormIsVisible={setFormIsVisible} />}
     </>
   )
 };

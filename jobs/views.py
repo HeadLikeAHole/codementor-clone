@@ -8,9 +8,11 @@ from .permissions import IsOwnerOrReadOnly
 
 
 class JobListCreateView(generics.ListCreateAPIView):
-    queryset = Job.objects.all().order_by('-timestamp')
     serializer_class = JobSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        return Job.objects.filter(taken=False).order_by('-timestamp')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'rest_auth.registration',
     'corsheaders',
+    'multiselectfield',
     
     'accounts.apps.AccountsConfig',
     'jobs.apps.JobsConfig',

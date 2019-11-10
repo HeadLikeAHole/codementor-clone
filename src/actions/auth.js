@@ -11,6 +11,7 @@ import {
 } from '../actions/types';
 import { registerUrl, loginUrl, userUrl } from '../endpoints';
 import { addToken } from '../utils';
+import { displayMessage } from './messages';
 
 
 export const checkAuthTimeout = expirationTime => dispatch => {
@@ -66,7 +67,8 @@ export const register = data => dispatch => {
     })
     .catch(error => {
       dispatch({ type: AUTH_FAIL });
-      console.log(error)
+      dispatch(displayMessage('danger', error.response.data));
+      console.log(`Status: ${error.response.status}`, error.response.data)
     })
 };
 
@@ -85,7 +87,8 @@ export const login = data => dispatch => {
     })
     .catch(error => {
       dispatch({ type: AUTH_FAIL });
-      console.log(error)
+      dispatch(displayMessage('danger', error.response.data));
+      console.log(`Status: ${error.response.status}`, error.response.data)
     })
 };
 

@@ -11,6 +11,7 @@ import {
 } from './types';
 import { addToken } from '../utils';
 import { jobListCreateUrl, jobDetailEditDeleteUrl, applyForJobUrl } from '../endpoints';
+import { displayMessage } from './messages';
 
 
 export const loadJobList = () => dispatch => {
@@ -18,9 +19,10 @@ export const loadJobList = () => dispatch => {
   axios.get(jobListCreateUrl)
     .then(response => dispatch({ type: JOB_LIST_LOADED, payload: response.data }))
     .catch(error => {
-        dispatch({ type: JOB_LIST_ERROR });
-        console.log(error)
-      });
+      dispatch({ type: JOB_LIST_ERROR });
+      dispatch(displayMessage('danger', error.response.data));
+      console.log(`Status: ${error.response.status}`, error.response.data)
+    });
 };
 
 
@@ -29,9 +31,10 @@ export const loadJobDetail = id => dispatch => {
   axios.get(jobDetailEditDeleteUrl(id))
     .then(response => dispatch({ type: JOB_DETAIL_LOADED, payload: response.data }))
     .catch(error => {
-        dispatch({ type: JOB_DETAIL_ERROR });
-        console.log(error)
-      });
+      dispatch({ type: JOB_DETAIL_ERROR });
+      dispatch(displayMessage('danger', error.response.data));
+      console.log(`Status: ${error.response.status}`, error.response.data)
+    });
 };
 
 
@@ -41,14 +44,20 @@ export const addJob = (data, history) => dispatch => {
       dispatch({ type: JOB_ADDED, payload: response.data });
       // redirect to home page after successful job submission
       history.push('/');
-    }).catch(error => console.log(error.response.data))
+    }).catch(error => {
+      dispatch(displayMessage('danger', error.response.data));
+      console.log(`Status: ${error.response.status}`, error.response.data)
+    })
 };
 
 
 export const editJob = (id, data, history) => dispatch => {
   axios.put(jobDetailEditDeleteUrl(id), data, addToken())
     .then(() => history.push(`/jobs/${id}`))
-    .catch(error => console.log(error.response.data));
+    .catch(error => {
+      dispatch(displayMessage('danger', error.response.data));
+      console.log(`Status: ${error.response.status}`, error.response.data)
+    });
 };
 
 
@@ -63,7 +72,8 @@ export const applyForJob = id => dispatch => {
   axios.get(applyForJobUrl(id), addToken())
     .then(response => dispatch({ type: JOB_DETAIL_LOADED, payload: response.data }))
     .catch(error => {
-        dispatch({ type: JOB_DETAIL_ERROR });
-        console.log(error.response.data)
-      });
+      dispatch({ type: JOB_DETAIL_ERROR });
+      dispatch(displayMessage('danger', error.response.data));
+      console.log(`Status: ${error.response.status}`, error.response.data)
+    });
 };

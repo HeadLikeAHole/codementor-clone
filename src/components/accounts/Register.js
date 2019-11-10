@@ -40,7 +40,7 @@ const Register = props => {
     <MDBContainer>
       <MDBRow>
         <MDBCol md="6" className="offset-md-3">
-          <MDBCard className="mt-5">
+          <MDBCard className="mt-4">
             <MDBCardBody>
               <form onSubmit={handleSubmit}>
                 <p className="h4 text-center py-4">Sign up</p>

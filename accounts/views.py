@@ -1,12 +1,15 @@
 from django.contrib.auth.models import User
 from rest_framework import generics
+from rest_framework import views
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
+from rest_framework import status
 
 from .serializers import UserSerializer, ProfileSerializer
 from .models import Profile, Freelancer
 from jobs.permissions import IsOwnerOrReadOnly, IsOwner
 from jobs.models import Job
+from .languages import LANGUAGES
 
 
 class UserView(generics.RetrieveAPIView):
@@ -52,7 +55,7 @@ class UnbecomeFreelancerView(generics.GenericAPIView):
         profile = Profile.objects.get(pk=pk)
         profile.freelancer.delete()
 
-        return Response(ProfileSerializer(profile, context=self.get_serializer_context()).data)
+        return Response(ProfileSerializer(profile, context=self.get_serializer_context()).data, status.HTTP_200_OK)
 
 
 class HireFreelancerView(generics.RetrieveAPIView):
@@ -66,8 +69,15 @@ class HireFreelancerView(generics.RetrieveAPIView):
 
         if user == job.freelancer:
             job.freelancer = None
+            job.taken = False
             job.save()
         else:
             job.freelancer = user
+            job.taken = True
             job.save()
         return self.retrieve(request, *args, **kwargs)
+
+
+class LanguageListView(views.APIView):
+    def get(self, request, *args, **kwargs):
+        return Response(LANGUAGES, status.HTTP_200_OK)

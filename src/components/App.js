@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { MDBContainer } from 'mdbreact';
 
 import store from '../store';
 import { loadAuth } from '../actions/auth';
 import Navbar from './common/Navbar';
+import Messages from './common/Messages';
 import PrivateRoute from './accounts/PrivateRoute';
 import Login from './accounts/Login';
 import Register from './accounts/Register';
@@ -24,6 +25,7 @@ const App = () => {
     <Provider store={store}>
       <Router>
         <Navbar />
+        <Messages />
         <MDBContainer>
           <Switch>
             <Route exact path="/login" component={Login} />

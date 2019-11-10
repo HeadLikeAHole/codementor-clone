@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDBBtn, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText } from 'mdbreact';
+import { MDBBtn, MDBCard, MDBCardBody, MDBCardTitle } from 'mdbreact';
 import PropTypes from 'prop-types';
 
 
