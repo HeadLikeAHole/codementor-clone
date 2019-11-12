@@ -8,6 +8,7 @@ class JobSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
     applicants = serializers.SerializerMethodField()
     freelancer = serializers.SerializerMethodField()
+    technologies_display = serializers.CharField(source='get_technologies_display', required=False)
 
     class Meta:
         model = Job

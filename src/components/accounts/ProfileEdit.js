@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 import { Link, useHistory } from 'react-router-dom';
 
 import { loadProfile, editProfile } from '../../actions/profiles';
-import LanguagesSelectField from './LanguagesSelectField';
+import MultiSelectField from '../common/MultiSelectField';
+import SelectField from '../common/SelectField';
+import { languageListUrl, technologyListUrl, timeZoneListUrl } from '../../endpoints';
 
 
 const ProfileEdit = props => {
@@ -19,7 +21,7 @@ const ProfileEdit = props => {
     photoFile: '',
     photoUrl: '',
     social_accounts: '',
-    timezone: '',
+    time_zone: '',
     languages: [],
     bio: '',
     technologies: []
@@ -65,7 +67,7 @@ const ProfileEdit = props => {
           photoFile: photoFile,
           photoUrl: profile.photo,
           social_accounts: profile.social_accounts,
-          timezone: profile.timezone,
+          time_zone: profile.time_zone,
           languages: profile.languages,
           bio: profile.freelancer ? profile.freelancer.bio : '',
           technologies: profile.freelancer ? profile.freelancer.technologies : ''
@@ -79,8 +81,8 @@ const ProfileEdit = props => {
     }
   }, [props.auth.user]);
 
-  const { id, username, email, first_name, last_name, photoUrl, social_accounts, timezone, languages, bio, technologies } = state;
-  console.log(state);
+  const { id, username, email, first_name, last_name, photoUrl, social_accounts, time_zone, languages, bio, technologies } = state;
+
   return (
     <MDBRow>
       <MDBCol md="6" className="offset-md-3">
@@ -162,49 +164,38 @@ const ProfileEdit = props => {
                   value={social_accounts}
                   onChange={handleChange}
                 />
-                <MDBInput
-                  label="Your timezone"
-                  group
-                  type="text"
-                  validate
-                  error="wrong"
-                  success="right"
-                  name="timezone"
-                  value={timezone}
-                  onChange={handleChange}
+                <MultiSelectField
+                  initialState={languages}
+                  setState={setState}
+                  url={languageListUrl}
+                  fieldName="languages"
+                  label="Languages you speak"
                 />
-
                 {
-                  state.id &&
-                    <LanguagesSelectField
-                      initialValues={languages}
-                      setState={setState}
+                  state.freelancer &&
+                    <MDBInput
+                      label="Your experience"
+                      group
+                      type="textarea"
+                      rows="5"
+                      validate
+                      error="wrong"
+                      success="right"
+                      name="bio"
+                      value={bio}
+                      onChange={handleChange}
                     />
                 }
-
-                <MDBInput
-                  label="Your experience"
-                  group
-                  type="textarea"
-                  rows="5"
-                  validate
-                  error="wrong"
-                  success="right"
-                  name="bio"
-                  value={bio}
-                  onChange={handleChange}
-                />
-                <MDBInput
-                  label="Technologies you know"
-                  group
-                  type="text"
-                  validate
-                  error="wrong"
-                  success="right"
-                  name="technologies"
-                  value={technologies}
-                  onChange={handleChange}
-                />
+                {
+                  state.freelancer &&
+                    <MultiSelectField
+                      initialState={technologies}
+                      setState={setState}
+                      url={technologyListUrl}
+                      fieldName="technologies"
+                      label="Technologies you know"
+                    />
+                }
               </div>
               <div className="text-center py-4 mt-3">
                 <MDBBtn color="cyan" type="submit">Save</MDBBtn>

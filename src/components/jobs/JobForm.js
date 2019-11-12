@@ -6,13 +6,15 @@ import { useLocation } from 'react-router-dom';
 
 import { addJob, editJob } from '../../actions/jobs';
 import { displayMessage } from '../../actions/messages';
+import { technologyListUrl } from '../../endpoints';
+import MultiSelectField from '../common/MultiSelectField';
 
 
 const JobForm = props => {
   const initialState = {
     summary: '',
     details: '',
-    technologies: '',
+    technologies: [],
     deadline: '',
     budget: ''
   };
@@ -49,8 +51,6 @@ const JobForm = props => {
         props.addJob(state, props.history);
       }
     }
-
-    setState(initialState);
   };
 
   const { summary, details, technologies, deadline, budget } = state;
@@ -81,12 +81,12 @@ const JobForm = props => {
                   value={details}
                   onChange={handleChange}
                 />
-                <MDBInput
+                <MultiSelectField
+                  initialState={technologies}
+                  setState={setState}
+                  url={technologyListUrl}
+                  fieldName="technologies"
                   label="Technologies you need help with"
-                  outline
-                  name="technologies"
-                  value={technologies}
-                  onChange={handleChange}
                 />
                 <MDBInput
                   label="Deadline"

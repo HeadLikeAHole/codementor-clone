@@ -15,7 +15,7 @@ const JobDetail = props => {
   useEffect(() => props.loadJobDetail(id), [id]);
 
   const { auth } = props;
-  const { user, applicants, freelancer, summary, details, technologies, deadline, budget, timestamp } = props.jobDetail.job;
+  const { user, applicants, freelancer, summary, details, technologies_display, deadline, budget, timestamp } = props.jobDetail.job;
 
   let isOwner;
   let hasApplied;
@@ -52,7 +52,7 @@ const JobDetail = props => {
         <MDBCardBody>
           <div>Details: {details}</div>
           <br />
-          <div>Technologies: {technologies}</div>
+          <div>Technologies: {technologies_display}</div>
           <br />
           <div>Deadline: {deadline}</div>
           <br />

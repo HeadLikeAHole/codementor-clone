@@ -24,7 +24,7 @@ const Profile = props => {
   const [formIsVisible, setFormIsVisible] = useState(false);
 
   const { auth } = props;
-  const { user, freelancer, taken_jobs, photo, social_accounts, timezone, languages } = props.profile.profile;
+  const { user, freelancer, taken_jobs, photo, social_accounts, time_zone, languages_display } = props.profile.profile;
 
   let isOwner;
 
@@ -82,16 +82,16 @@ const Profile = props => {
             <MDBCol md={10}>
               <div>Social Accounts: {social_accounts}</div>
               <br />
-              <div>Timezone: {timezone}</div>
+              <div>Time zone: {time_zone}</div>
               <br />
-              <div>Languages: {languages}</div>
+              <div>Languages: {languages_display}</div>
               <br />
               {
                 isFreelancer &&
                   <>
                     <div>Experience: {freelancer.bio}</div>
                     <br />
-                    <div>Technologies: {freelancer.technologies}</div>
+                    <div>Technologies: {freelancer.technologies_display}</div>
                     <br />
                   </>
               }

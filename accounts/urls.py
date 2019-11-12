@@ -13,4 +13,6 @@ urlpatterns = [
     path('become-freelancer/', views.BecomeFreelancerView.as_view()),
     path('unbecome-freelancer/', views.UnbecomeFreelancerView.as_view()),
     path('languages/', views.LanguageListView.as_view()),
+    path('technologies/', views.TechnologyListView.as_view()),
+    path('time-zones/', views.TimeZoneListView.as_view())
 ]

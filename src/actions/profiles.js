@@ -56,34 +56,27 @@ const headers = {
 
 export const editProfile = (profile, history) => dispatch => {
   const data = new FormData();
-  const user = {
-    'user': {
-      username: profile.username,
-      email: profile.email,
-      first_name: profile.first_name,
-      last_name: profile.last_name
-    }
-  };
-  data.append('user', JSON.stringify(user));
 
-  let freelancer;
-  if (profile.freelancer) {
-    freelancer = {
-      freelancer: {
-        bio: profile.bio,
-        technologies: profile.technologies
-      }
-    };
-    data.append('freelancer', JSON.stringify(freelancer));
-  }
+  data.append('username', profile.username);
+  data.append('email', profile.email);
+  data.append('first_name', profile.first_name);
+  data.append('last_name', profile.last_name);
 
   data.append('photo', profile.photoFile);
   data.append('social_accounts', profile.social_accounts);
   data.append('timezone', profile.timezone);
   data.append('languages', profile.languages);
 
+  if (profile.freelancer) {
+    data.append('bio', profile.bio);
+    data.append('technologies', profile.technologies);
+  }
+
   axios.put(profileDetailEditDeleteUrl(profile.id), data, headers)
-    .then(response => dispatch({ type: PROFILE_LOADED, payload: response.data }))
+    .then(response => {
+      dispatch({ type: PROFILE_LOADED, payload: response.data });
+      history.push(`/profile/${profile.id}`)
+    })
     .catch(error => {
       dispatch({ type: PROFILE_ERROR });
       dispatch(displayMessage('danger', error.response.data));

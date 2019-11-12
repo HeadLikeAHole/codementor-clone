@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
 
-from .technologies import TECHNOLOGIES
+from choices import TECHNOLOGIES
 
 
 class Job(models.Model):

@@ -22,6 +22,10 @@ export const hireFreelancerUrl = (freelancer_id, job_id) => `${endpoint}accounts
 
 export const languageListUrl = endpoint + 'accounts/languages/';
 
+export const technologyListUrl = endpoint + 'accounts/technologies/';
+
+export const timeZoneListUrl = endpoint + 'accounts/time-zones/';
+
 export const jobListCreateUrl = endpoint + 'jobs/';
 
 export const jobDetailEditDeleteUrl = id => `${endpoint}jobs/${id}/`;

@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { becomeFreelancer } from '../../actions/profiles';
+import { technologyListUrl } from '../../endpoints';
+import MultiSelectField from '../common/MultiSelectField';
 
 
 const FreelancerForm = props => {
   const [bio, setBio] = useState('');
-  const [technologies, setTechnologies] = useState('');
+  const [technologies, setTechnologies] = useState([]);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -35,16 +37,14 @@ const FreelancerForm = props => {
                   value={bio}
                   onChange={e => setBio(e.target.value)}
                 />
-                <MDBInput
-                  label="Type technologies you know"
-                  group
-                  type="text"
-                  validate
-                  value={technologies}
-                  onChange={e => setTechnologies(e.target.value)}
+                <MultiSelectField
+                  initialState={technologies}
+                  setState={setTechnologies}
+                  url={technologyListUrl}
+                  label="Technologies you know"
                 />
               </div>
-              <div className="text-center">
+              <div className="mt-4 text-center">
                 <MDBBtn type="submit">Submit</MDBBtn>
               </div>
             </form>

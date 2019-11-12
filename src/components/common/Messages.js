@@ -21,7 +21,7 @@ const Messages = props => {
     }
     if (typeof props.messages.message === 'object') {
       for (const [key, value] of Object.entries(props.messages.message)) {
-        message = `${key}: ${value.join(' --- ')}`;
+        message = `${key}: ${value}`;
         messages.push(message)
       }
     }
