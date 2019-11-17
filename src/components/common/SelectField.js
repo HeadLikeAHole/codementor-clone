@@ -15,24 +15,33 @@ const SelectField = props => {
     axios.get(url)
       .then(response => setOptions(convertToOptions(response.data)))
       .catch(error => console.log(`Status: ${error.response.status}`, error.response.data));
-  }, []);
+    setSelected(initialState)
+  }, [initialState]);
 
-  const handleChange = selected => {
-    setSelected(selected);
+  const handleChange = e => {
+    const value = e.target.value;
     // field name is supplied if useReducer is used, if useState is used then field name isn't necessary
     if (fieldName) {
-      setState({ [fieldName]: selected })
+      setState({ [fieldName]: value })
     } else {
-      setState(selected)
+      setState(value)
     }
   };
 
   return (
     <>
       {label && <p>{label}</p>}
-      <select className="browser-default custom-select">
-        <option>Choose your option</option>
-        {options.map(option => <option value={option.value}>{option.label}</option>)}
+      <select className="mb-3 browser-default custom-select" value={selected} onChange={handleChange}>
+        <option>Choose your time zone</option>
+        {
+          options.map((option, index) => {
+            if (option.value === selected) {
+              return <option key={index} value={option.value} selected>{option.label}</option>
+            } else {
+              return <option key={index} value={option.value}>{option.label}</option>
+            }
+          })
+        }
       </select>
     </>
   )
@@ -40,7 +49,7 @@ const SelectField = props => {
 
 
 SelectField.propTypes = {
-  initialState: PropTypes.array.isRequired,
+  initialState: PropTypes.object.isRequired,
   setState: PropTypes.func.isRequired,
   url: PropTypes.string.isRequired,
   fieldName: PropTypes.string,

@@ -2,11 +2,14 @@ import React, {useEffect, useState} from 'react';
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardTitle, MDBCol, MDBRow } from 'mdbreact';
 import { useParams, useLocation, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { loadProfile, hireFreelancer } from '../../actions/profiles';
 import ProfileDeleteButton from './ProfileDeleteButton';
 import UnbecomeFreelancerButton from './UnbecomeFreelancerButton';
 import FreelancerForm from './FreelancerForm';
+import JobStatusClient from './JobStatusClient';
+import JobStatusFreelancer from './JobStatusFreelancer';
 
 
 const Profile = props => {
@@ -24,7 +27,7 @@ const Profile = props => {
   const [formIsVisible, setFormIsVisible] = useState(false);
 
   const { auth } = props;
-  const { user, freelancer, taken_jobs, photo, social_accounts, time_zone, languages_display } = props.profile.profile;
+  const { user, freelancer, job_requests, taken_jobs, photo, social_accounts, time_zone_display, languages_display } = props.profile.profile;
 
   let isOwner;
 
@@ -82,17 +85,16 @@ const Profile = props => {
             <MDBCol md={10}>
               <div>Social Accounts: {social_accounts}</div>
               <br />
-              <div>Time zone: {time_zone}</div>
+              <div>Time zone: {time_zone_display}</div>
               <br />
               <div>Languages: {languages_display}</div>
               <br />
               {
-                isFreelancer &&
+                isOwner && isFreelancer &&
                   <>
                     <div>Experience: {freelancer.bio}</div>
                     <br />
                     <div>Technologies: {freelancer.technologies_display}</div>
-                    <br />
                   </>
               }
               <br />
@@ -101,8 +103,24 @@ const Profile = props => {
         </MDBCardBody>
       </MDBCard>
       {formIsVisible && <FreelancerForm setFormIsVisible={setFormIsVisible} />}
+      {
+        isOwner && job_requests.length > 0 &&
+          <JobStatusClient jobs={job_requests} />
+      }
+      {
+        isOwner && taken_jobs.length > 0 &&
+          <JobStatusFreelancer username={auth.user.username} jobs={taken_jobs} />
+      }
     </>
   )
+};
+
+
+Profile.propTypes = {
+  loadProfile: PropTypes.func.isRequired,
+  hireFreelancer: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired
 };
 
 

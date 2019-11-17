@@ -64,7 +64,7 @@ export const editProfile = (profile, history) => dispatch => {
 
   data.append('photo', profile.photoFile);
   data.append('social_accounts', profile.social_accounts);
-  data.append('timezone', profile.timezone);
+  data.append('time_zone', profile.time_zone);
   data.append('languages', profile.languages);
 
   if (profile.freelancer) {

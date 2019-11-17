@@ -1,12 +1,18 @@
 from django.core.exceptions import PermissionDenied
+from django.conf import settings
 from rest_framework import generics
+from rest_framework import views
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework import status
+import stripe
 
 from .models import Job
 from .serializers import JobSerializer
 from .permissions import IsOwnerOrReadOnly
+
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class JobListCreateView(generics.ListCreateAPIView):
@@ -55,3 +61,8 @@ class ApplyForJobView(generics.RetrieveAPIView):
                 job.applicants.add(user)
             return self.retrieve(request, *args, **kwargs)
         raise PermissionDenied
+
+
+class PaymentView(views.APIView):
+    def post(self, request, *args, **kwargs):
+        pass

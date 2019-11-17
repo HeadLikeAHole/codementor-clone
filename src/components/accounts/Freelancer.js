@@ -14,7 +14,7 @@ const Freelancer = props => {
         <MDBCardBody>
           <MDBCardTitle>{user.first_name} {user.last_name}</MDBCardTitle>
           <MDBCardText>
-            {freelancer.technologies}
+            {freelancer.technologies_display}
           </MDBCardText>
         </MDBCardBody>
       </MDBCard>

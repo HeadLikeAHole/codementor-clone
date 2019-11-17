@@ -81,7 +81,7 @@ const ProfileEdit = props => {
     }
   }, [props.auth.user]);
 
-  const { id, username, email, first_name, last_name, photoUrl, social_accounts, time_zone, languages, bio, technologies } = state;
+  const { id, username, email, first_name, last_name, photoUrl, social_accounts, time_zone, languages, bio, technologies } = state; console.log(state);
 
   return (
     <MDBRow>
@@ -163,6 +163,13 @@ const ProfileEdit = props => {
                   name="social_accounts"
                   value={social_accounts}
                   onChange={handleChange}
+                />
+                <SelectField
+                  initialState={time_zone}
+                  setState={setState}
+                  url={timeZoneListUrl}
+                  fieldName="time_zone"
+                  label="Your time zone"
                 />
                 <MultiSelectField
                   initialState={languages}

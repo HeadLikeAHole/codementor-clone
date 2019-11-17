@@ -31,3 +31,5 @@ export const jobListCreateUrl = endpoint + 'jobs/';
 export const jobDetailEditDeleteUrl = id => `${endpoint}jobs/${id}/`;
 
 export const applyForJobUrl = id => `${endpoint}jobs/${id}/apply-for-job/`;
+
+export const paymentUrl = 'jobs/payment/';

@@ -67,7 +67,7 @@ const JobDetail = props => {
                 <Link to={`/profile/${freelancer.id}`}>
                   {freelancer.first_name} {freelancer.last_name}
                 </Link>
-                <MDBBtn color="warning" size="sm">Pay</MDBBtn>
+                {isOwner && <Link to="/payment"><MDBBtn color="warning" size="sm">Pay</MDBBtn></Link>}
               </div>
           }
           <br />

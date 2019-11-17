@@ -25,12 +25,17 @@ class FreelancerSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     freelancer = FreelancerSerializer()
+    time_zone_display = serializers.CharField(source='get_time_zone_display', required=False)
     languages_display = serializers.CharField(source='get_languages_display')
+    job_requests = serializers.SerializerMethodField()
     taken_jobs = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
         fields = '__all__'
+
+    def get_job_requests(self, obj):
+        return JobSerializer(obj.user.job_set.all(), many=True).data
 
     def get_taken_jobs(self, obj):
         return JobSerializer(obj.user.jobs.all(), many=True).data

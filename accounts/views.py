@@ -27,6 +27,7 @@ class ProfileView(generics.RetrieveUpdateDestroyAPIView):
 
     def put(self, request, *args, **kwargs):
         data = request.data
+        print(data)
 
         user = request.user
         user.username = data.get('username', user.username)
@@ -38,7 +39,7 @@ class ProfileView(generics.RetrieveUpdateDestroyAPIView):
         profile = user.profile
         profile.photo = data.get('photo', profile.photo)
         profile.social_accounts = data.get('social_accounts', profile.social_accounts)
-        profile.timezone = data.get('time_zone', profile.time_zone)
+        profile.time_zone = data.get('time_zone', profile.time_zone)
         profile.languages = data.get('languages', profile.languages)
         profile.save()
 

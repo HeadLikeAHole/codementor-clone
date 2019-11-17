@@ -13,6 +13,7 @@ import Register from './accounts/Register';
 import JobList from './jobs/JobList';
 import JobDetail from './jobs/JobDetail';
 import JobForm from './jobs/JobForm';
+import Payment from './jobs/Payment';
 import FreelancerList from  './accounts/FreelancerList';
 import Profile from './accounts/Profile';
 import ProfileEdit from './accounts/ProfileEdit';
@@ -33,6 +34,7 @@ const App = () => {
             <Route exact path="/" component={JobList} />
             <Route exact path="/jobs/:id" component={JobDetail} />
             <PrivateRoute exact path="/job-form" component={JobForm} />
+            <PrivateRoute exact path="/payment" component={Payment} />
             <Route exact path="/freelancers" component={FreelancerList} />
             <Route exact path="/profile/:id" component={Profile} />
             <Route exact path="/profile-edit" component={ProfileEdit} />

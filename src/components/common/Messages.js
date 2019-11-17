@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useReducer, useEffect } from 'react';
 import { MDBAlert } from 'mdbreact';
 import { connect } from 'react-redux';
 
 
 const Messages = props => {
   const [isVisible, setVisible] = useState(false);
+  const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
 
   useEffect(() => {
     if (props.messages.color) {
-      setVisible(true)
+      setVisible(true);
     }
   }, [props.messages]);
 

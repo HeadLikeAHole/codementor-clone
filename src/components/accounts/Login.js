@@ -8,12 +8,12 @@ import { login } from '../../actions/auth';
 
 
 const Login = props => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
-    props.login({ username, password });
+    props.login({ email, password });
   };
 
   // redirect to home page after successful login
@@ -31,15 +31,15 @@ const Login = props => {
                 <p className="h4 text-center py-4">Log in</p>
                 <div className="grey-text">
                   <MDBInput
-                    label="Type your username"
-                    icon="user"
+                    label="Type your email"
+                    icon="envelope"
                     group
                     type="text"
                     validate
                     error="wrong"
                     success="right"
-                    value={username}
-                    onChange={e => setUsername(e.target.value)}
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                   />
                   <MDBInput
                     label="Type your password"
