@@ -1,8 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.db import models
-from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
 
 from choices import TECHNOLOGIES
+
+User = get_user_model()
 
 
 class Job(models.Model):
@@ -16,6 +18,7 @@ class Job(models.Model):
     budget = models.PositiveIntegerField()
     timestamp = models.DateTimeField(auto_now_add=True)
     taken = models.BooleanField(default=False)
+    done = models.BooleanField(default=False)
 
     def __str__(self):
         return self.summary

@@ -81,8 +81,8 @@ const ProfileEdit = props => {
     }
   }, [props.auth.user]);
 
-  const { id, username, email, first_name, last_name, photoUrl, social_accounts, time_zone, languages, bio, technologies } = state; console.log(state);
-
+  const { id, username, email, first_name, last_name, photoUrl, social_accounts, time_zone, languages, bio, technologies } = state;
+  console.log(state);
   return (
     <MDBRow>
       <MDBCol md="6" className="offset-md-3">

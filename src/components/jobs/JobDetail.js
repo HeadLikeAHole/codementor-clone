@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardTitle } from 'mdbreact';
@@ -7,10 +7,12 @@ import { useParams, Link } from 'react-router-dom';
 import { loadJobDetail, applyForJob } from '../../actions/jobs';
 import JobDeleteButton from './JobDeleteButton';
 import ApplicantList from './ApplicantList';
-
+import Payment from './Payment'
 
 const JobDetail = props => {
   const { id } = useParams();
+
+  const [paymentVisible, setPaymentVisible] = useState(false);
 
   useEffect(() => props.loadJobDetail(id), [id]);
 
@@ -19,13 +21,13 @@ const JobDetail = props => {
 
   let isOwner;
   let hasApplied;
+  let isAccepted;
   let jobHasLoaded;
   if (Object.keys(auth.user).length && Object.keys(props.jobDetail.job).length) {
-    if (auth.user.username === user) {
-      isOwner = true
-    }
+    if (auth.user.username === user) isOwner = true;
     // check if user has applied for the job
     hasApplied = !!applicants.filter(applicant => applicant.id === auth.user.id).length;
+    if (freelancer && auth.user.username === freelancer.username) isAccepted = true;
     jobHasLoaded = true
   }
 
@@ -34,18 +36,21 @@ const JobDetail = props => {
       <MDBCardBody className="position-relative">
         <div style={{ position: 'absolute', top: '8px', right: '5px' }}>
         {
-          isOwner ?
+          isOwner && !freelancer &&
             <>
-              <Link to={{ pathname: '/job-form', job: props.jobDetail.job }}><MDBBtn size="sm">Edit</MDBBtn></Link>
-              <JobDeleteButton />
+              <Link to={{pathname: '/job-form', job: props.jobDetail.job}}>
+                <MDBBtn size="sm" disabled={!!freelancer}>Edit</MDBBtn>
+              </Link>
+              <JobDeleteButton/>
             </>
-          :
-            auth.isAuthenticated &&
-              <>
-                <MDBBtn size="sm" color={hasApplied ? 'deep-orange' : 'primary'} onClick={() => props.applyForJob(id)}>
-                  {hasApplied ? 'Cancel Your Application' : 'Apply For The Job'}
-                </MDBBtn>
-              </>
+        }
+        {
+          jobHasLoaded && auth.isAuthenticated && !isOwner && !isAccepted &&
+            <>
+              <MDBBtn size="sm" color={hasApplied ? 'deep-orange' : 'primary'} onClick={() => props.applyForJob(id)}>
+                {hasApplied ? 'Cancel Your Application' : 'Apply For The Job'}
+              </MDBBtn>
+            </>
         }
         </div>
         <MDBCardTitle className="text-center">{summary}</MDBCardTitle>
@@ -67,7 +72,16 @@ const JobDetail = props => {
                 <Link to={`/profile/${freelancer.id}`}>
                   {freelancer.first_name} {freelancer.last_name}
                 </Link>
-                {isOwner && <Link to="/payment"><MDBBtn color="warning" size="sm">Pay</MDBBtn></Link>}
+                {isOwner &&
+                  <React.Fragment>
+                    {paymentVisible ? 
+                  <Payment job={props.jobDetail.job} /> : 
+                  <MDBBtn size="sm" color='deep-orange' onClick={setPaymentVisible}>
+                    Pay
+                  </MDBBtn>
+                  }
+                </React.Fragment>
+                }
               </div>
           }
           <br />

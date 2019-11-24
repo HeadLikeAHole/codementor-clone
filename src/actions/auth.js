@@ -19,7 +19,7 @@ export const checkAuthTimeout = expirationTime => dispatch => {
 };
 
 
-const loadUser = dispatch => {
+export const loadUser = dispatch => {
     dispatch({ type: USER_LOADING });
     axios.get(userUrl, addToken())
       .then(response => dispatch({ type: USER_LOADED, payload: response.data }))

@@ -1,15 +1,16 @@
 from django.contrib.auth.models import User
 from rest_framework import generics
+from rest_framework import status
 from rest_framework import views
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.exceptions import PermissionDenied
 
-from .serializers import UserSerializer, ProfileSerializer
-from .models import Profile, Freelancer
-from jobs.permissions import IsOwnerOrReadOnly, IsOwner
-from jobs.models import Job
 from choices import LANGUAGES, TECHNOLOGIES, TIME_ZONES
+from jobs.models import Job
+from jobs.permissions import IsOwnerOrReadOnly, IsOwner
+from .models import Profile, Freelancer
+from .serializers import UserSerializer, ProfileSerializer
 
 
 class UserView(generics.RetrieveAPIView):
@@ -27,8 +28,6 @@ class ProfileView(generics.RetrieveUpdateDestroyAPIView):
 
     def put(self, request, *args, **kwargs):
         data = request.data
-        print(data)
-
         user = request.user
         user.username = data.get('username', user.username)
         user.email = data.get('email', user.email)

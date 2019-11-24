@@ -5,9 +5,14 @@ from .models import Profile, Freelancer
 
 
 class UserSerializer(serializers.ModelSerializer):
+    is_freelancer = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'first_name', 'last_name')
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'is_freelancer')
+
+    def get_is_freelancer(self, obj):
+        return hasattr(obj.profile, 'freelancer')
 
 
 # since JobSerializer uses UserSerializer then JobSerializer should be imported after UserSerializer definition
@@ -32,7 +37,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = '__all__'
+        exclude = ['stripe_customer_id']
 
     def get_job_requests(self, obj):
         return JobSerializer(obj.user.job_set.all(), many=True).data
