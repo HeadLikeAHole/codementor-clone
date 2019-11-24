@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -24,3 +24,24 @@ def create_profile(sender, **kwargs):
 @receiver(post_delete, sender=Profile)
 def delete_user(sender, instance, **kwargs):
     User.objects.get(id=instance.user.id).delete()
+
+
+@receiver(pre_save, sender=Profile)
+def delete_photo_file_on_update(sender, instance, **kwargs):
+    """
+    Deletes old photo when updating model instance
+    """
+    try:
+        old_photo = sender.objects.get(pk=instance.pk).photo
+    except sender.DoesNotExist:
+        return False
+
+    # if old photo is the default profile photo then it shouldn't be deleted otherwise delete old photo
+    if not old_photo.url.endswith('/media/profile_default.jpg'):
+        sender.objects.get(pk=instance.pk).photo.delete(False)
+
+    # if old and new photos are default profile photos
+    # then make new photo be equal to old photo so new copy of the default profile photo isn't created
+    new_photo = instance.photo
+    if old_photo == new_photo:
+        instance.photo = old_photo
