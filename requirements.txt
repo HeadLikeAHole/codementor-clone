@@ -17,4 +17,4 @@ requests-oauthlib==1.2.0
 six==1.12.0
 sqlparse==0.3.0
 stripe==2.40.0
-urllib3==1.25.6
+urllib3==1.26.5
